@@ -4,9 +4,9 @@ export function useFetching(callBack){
     const [isLoader, setIsLoader] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetching = () => {
+    const fetching = async () => {
         try {
-            callBack();
+           await callBack();
         } catch (err) {
             setError(err);
         } finally {

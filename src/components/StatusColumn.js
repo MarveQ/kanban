@@ -7,7 +7,7 @@ const StatusColumn = ({status, tasks}) => {
             <h3>{status.title}</h3>
 
             {tasks.filter(task => task.status === status.title).map(task =>
-                <Task task={task}/>
+                <Task key={task._id} task={task}/>
             )}
 
         </div>
