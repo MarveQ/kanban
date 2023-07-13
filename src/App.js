@@ -4,9 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import Kanban from "./components/Kanban";
 import {fetchStatuses} from "./api/StatusesServeses";
-import {fetchTasks} from "./api/StatusesTasks";
+import {fetchTasks, postTask} from "./api/TasksServeses";
 import {useFetching} from "./hooks/useFetching";
-import MyModal from "./components/ui/MyModal";
+import MyModal from "./components/ui/Modul/MyModal";
 import CreateModal from "./components/CreateModal";
 
 function App() {
@@ -22,6 +22,16 @@ function App() {
     });
     const [openModal, setOpenModal] = useState(false);
     const priorities = [1, 2, 3, 4, 5, 6];
+
+    const createTask = async (newTask) => {
+        try{
+            await postTask(newTask);
+            await getTasks();
+        }
+        catch(err){
+            alert("Something went wrong")
+        }
+    }
 
     useEffect(() => {
         getStatuses();
@@ -45,7 +55,10 @@ function App() {
                 setOpenModal={setOpenModal}
             >
                 <CreateModal
+                    createTask={createTask}
                     priorities={priorities}
+                    statuses={statuses}
+                    setOpenModal={setOpenModal}
                 />
             </MyModal>
         </div>
