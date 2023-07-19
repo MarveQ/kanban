@@ -1,7 +1,11 @@
 .myButton {
-    width: 80px;
+    width: 85px;
     padding: 7px 15px;
     margin: 5px;
     border: 1px solid dodgerblue;
     border-radius: 5px;
+}
+
+.myButton:hover {
+    background-color: #b3c2ea;
 }

@@ -4,14 +4,16 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import Kanban from "./components/Kanban";
 import {fetchStatuses} from "./api/StatusesServeses";
-import {fetchTasks, postTask} from "./api/TasksServeses";
+import {deleteTask, fetchTasks, postTask, updateTask} from "./api/TasksServeses";
 import {useFetching} from "./hooks/useFetching";
 import MyModal from "./components/ui/Modul/MyModal";
-import CreateModal from "./components/CreateModal";
+import CreateModal from "./components/Modals/CreateModal";
+import DeleteModal from "./components/Modals/DeleteModal";
+import UpdateModal from "./components/Modals/UpdateModal";
 
 function App() {
-    const [tasks, setTasks] = useState([]);
     const [statuses, setStatuses] = useState([]);
+    const [tasks, setTasks] = useState([]);
     const [getStatuses, isStatusesLoader, statusesError] = useFetching(async () => {
         const res = await fetchStatuses();
         setStatuses(res.data);
@@ -20,15 +22,37 @@ function App() {
         const res = await fetchTasks();
         setTasks(res.data);
     });
-    const [openModal, setOpenModal] = useState(false);
+    const [modalState, setModalState] = useState({
+        isOpen: false,
+        mode: null,
+        data: null
+    });
+    //ModalState
     const priorities = [1, 2, 3, 4, 5, 6];
 
     const createTask = async (newTask) => {
-        try{
+        try {
             await postTask(newTask);
             await getTasks();
+        } catch (err) {
+            alert("Something went wrong")
         }
-        catch(err){
+    }
+
+    const changeTask = async (id, updatedTask) => {
+        try {
+            await updateTask(id, updatedTask);
+            await getTasks();
+        } catch (err) {
+            alert("Something went wrong")
+        }
+    }
+
+    const removeTask = async (id) => {
+        try {
+            await deleteTask(id);
+            await getTasks();
+        } catch (err) {
             alert("Something went wrong")
         }
     }
@@ -41,7 +65,14 @@ function App() {
     return (
         <div className="App">
             <h1>Kanban board</h1>
-            <button type="button" className="btn btn-secondary" onClick={() => setOpenModal(true)}>Create new task</button>
+            <button type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setModalState({
+                        isOpen: true,
+                        mode: "CreateModal",
+                        data: null
+                    })}>Create new task
+            </button>
             <Kanban
                 isStatusesLoader={isStatusesLoader}
                 isTasksLoader={isTasksLoader}
@@ -49,16 +80,33 @@ function App() {
                 tasksError={tasksError}
                 tasks={tasks}
                 statuses={statuses}
+                setModalState={setModalState}
+                changeTask={changeTask}
             />
+
             <MyModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
+                modalState={modalState}
+                setModalState={setModalState}
             >
                 <CreateModal
                     createTask={createTask}
                     priorities={priorities}
                     statuses={statuses}
-                    setOpenModal={setOpenModal}
+                    setModalState={setModalState}
+                />
+
+                <DeleteModal
+                    modalState={modalState}
+                    setModalState={setModalState}
+                    deleteTask={removeTask}
+                />
+
+                <UpdateModal
+                    modalState={modalState}
+                    setModalState={setModalState}
+                    priorities={priorities}
+                    statuses={statuses}
+                    changeTask={changeTask}
                 />
             </MyModal>
         </div>

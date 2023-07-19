@@ -1,16 +1,19 @@
 import React, {useState} from 'react';
-import MyButton from "./ui/Button/MyButton";
+import MyButton from "../ui/Button/MyButton";
 
-const CreateModal = ({priorities, statuses, createTask, setOpenModal}) => {
+const CreateModal = ({priorities, statuses, createTask, setModalState}) => {
     const initialTask = {name: "", description: "", priority: priorities[0], status: statuses[0]?.title};
     const [newTask, setNewTask] = useState(initialTask);
     const onCreate = () => {
         createTask(newTask);
-        setOpenModal(false);
-        setNewTask(initialTask);
+        onCancel();
     }
     const onCancel = () => {
-        setOpenModal(false);
+        setModalState({
+            isOpen: false,
+            mode: "CreateModal",
+            data: null
+        });
         setNewTask(initialTask);
     }
 
@@ -50,6 +53,7 @@ const CreateModal = ({priorities, statuses, createTask, setOpenModal}) => {
                         id="floatingSelect"
                         aria-label="Floating label select example"
                 >
+                    <option defaultValue=""></option>
                     {priorities.map(el => <option key={el} value={el}>{el}</option>)}
                 </select>
                 <label htmlFor="floatingInputGroup">Priority</label>
@@ -61,6 +65,7 @@ const CreateModal = ({priorities, statuses, createTask, setOpenModal}) => {
                         id="floatingSelect"
                         aria-label="Floating label select example"
                 >
+                    <option defaultValue=""></option>
                     {statuses.map(el => <option key={el._id} value={el.title}>{el.title}</option>)}
                 </select>
                 <label htmlFor="floatingInputGroup">Status</label>
