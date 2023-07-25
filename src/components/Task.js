@@ -1,6 +1,7 @@
 import React from 'react';
 import MyButton from "./ui/Button/MyButton";
 import buttonClasses from './ui/Button/MyButton.module.css'
+import {Button} from "reactstrap";
 
 const statusButtonStyle = {
     position: "absolute",
@@ -45,13 +46,16 @@ const Task = ({statusesTitle, task, setModalState, changeTask}) => {
                     </MyButton>
                 </div>
 
-                <button onClick={() => setModalState({
-                    isOpen: true,
-                    mode: "UpdateModal",
-                    data: task,
-                })}
-                        className="btn btn-primary">Update
-                </button>
+                <Button color="primary" onClick={toggle}>
+                    Update
+                </Button>
+                {/*<button onClick={() => setModalState({*/}
+                {/*    isOpen: true,*/}
+                {/*    mode: "UpdateModal",*/}
+                {/*    data: task,*/}
+                {/*})}*/}
+                {/*        className="btn btn-primary">Update*/}
+                {/*</button>*/}
 
                 <button onClick={() => setModalState({
                     isOpen: true,
@@ -72,23 +76,3 @@ const Task = ({statusesTitle, task, setModalState, changeTask}) => {
 };
 
 export default Task;
-
-
-/*<div className="d-flex justify-content-center align-items-baseline gap-1">
-    <MyButton
-        disabled={statusesTitle.indexOf(task.status) === 0}
-        onClick = {() => changeTask(task._id, {status: statusesTitle[statusesTitle.indexOf(task.status) -1]})}
-        style={{width: "40px", padding: "4px", marginRight: "3px"}}
-    >&larr;</MyButton>
-    <button className="btn btn-primary">Update</button>
-    <button onClick={() => setOpenModal({
-        isOpen: true,
-        mode: "DeleteModal",
-        data: task
-    })} className="btn btn-danger">Delete</button>
-    <MyButton
-        disabled={statusesTitle.indexOf(task.status) === statusesTitle.length-1}
-        onClick = {() => changeTask(task._id, {status: statusesTitle[statusesTitle.indexOf(task.status) +1]})}
-        style={{width: "40px", padding: "4px", marginRight: "3px"}}
-    >&rarr;</MyButton>
-</div>*/
