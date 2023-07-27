@@ -1,5 +1,5 @@
 import './App.css';
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import Kanban from "./components/Kanban";
@@ -10,6 +10,7 @@ import MyModal from "./components/ui/Modul/MyModal";
 import CreateModal from "./components/Modals/CreateModal";
 import DeleteModal from "./components/Modals/DeleteModal";
 import UpdateModal from "./components/Modals/UpdateModal";
+import {useSearch} from "./hooks/useSearch";
 
 function App() {
     const [statuses, setStatuses] = useState([]);
@@ -57,6 +58,10 @@ function App() {
         }
     }
 
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const searchedTask = useSearch(tasks, searchQuery);
+
     useEffect(() => {
         getStatuses();
         getTasks();
@@ -73,12 +78,15 @@ function App() {
                         data: null
                     })}>Create new task
             </button>
+
+            <input type="text" placeholder="Find Task" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}/>
+
             <Kanban
                 isStatusesLoader={isStatusesLoader}
                 isTasksLoader={isTasksLoader}
                 statusesError={statusesError}
                 tasksError={tasksError}
-                tasks={tasks}
+                tasks={searchedTask}
                 statuses={statuses}
                 setModalState={setModalState}
                 changeTask={changeTask}

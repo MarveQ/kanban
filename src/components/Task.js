@@ -5,9 +5,9 @@ import {Button} from "reactstrap";
 
 const statusButtonStyle = {
     position: "absolute",
-    top: "49px",
+    top: 0,
     width: "10%",
-    height: "77%",
+    height: "100% ",
     padding: "4px",
     margin: 0,
     border: "1px solid #d2d2d2",
@@ -26,7 +26,7 @@ const Task = ({statusesTitle, task, setModalState, changeTask}) => {
                     style={{...statusButtonStyle, borderRadius: "0 0 0 5px", left: 0}}
                 >&larr;</MyButton>
 
-                <p className="card-text">{task.description}</p>
+                <p className="card-text" style={{padding: "0 25px 0 25px"}}>{task.description}</p>
                 <div className="d-flex justify-content-center align-items-baseline">
                     <p className="card-text me-2">Priority: {task.priority}</p>
                     <MyButton
@@ -46,16 +46,13 @@ const Task = ({statusesTitle, task, setModalState, changeTask}) => {
                     </MyButton>
                 </div>
 
-                <Button color="primary" onClick={toggle}>
-                    Update
-                </Button>
-                {/*<button onClick={() => setModalState({*/}
-                {/*    isOpen: true,*/}
-                {/*    mode: "UpdateModal",*/}
-                {/*    data: task,*/}
-                {/*})}*/}
-                {/*        className="btn btn-primary">Update*/}
-                {/*</button>*/}
+                <button onClick={() => setModalState({
+                    isOpen: true,
+                    mode: "UpdateModal",
+                    data: task,
+                })}
+                        className="btn btn-primary">Update
+                </button>
 
                 <button onClick={() => setModalState({
                     isOpen: true,
